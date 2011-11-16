@@ -20,7 +20,7 @@ batch = function(out.dir,
 
     dir.create(cur.out.dir, showWarnings=FALSE, recursive=TRUE)
     
-    out.plot.path = file.path(cur.out.dir, 'plot.png')
+    out.plot.path = file.path(cur.out.dir, 'plot.svg')
     out.fcs.c1 = 'c1.fcs'
     out.fcs.c2 = 'c2.fcs'
 

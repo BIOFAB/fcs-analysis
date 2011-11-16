@@ -1,16 +1,14 @@
 
+# Draw histogram, density plot and normal fit
 
 draw.plot = function(flowframe, fluo, out.path.plot) {
 
   # graphical parameter
   x.lim = c(0,4)
 
-  png(file.path(out.path.plot))
+#  png(file.path(out.path.plot))
 
-  # Draw histogram, density plot and normal fit
-
-#  cat("Fluo is: ", fluo, "\n")
-#  cat("Exprs: ", flowframe@exprs[,fluo], "\n")
+  devSVG(file=file.path(out.path.plot), width=6, height=6, onefile=TRUE)
 
   breaks = nrow(flowframe)/5
   cat("breaks: ", breaks, "\n")

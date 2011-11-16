@@ -2,6 +2,7 @@
 library(flowCore)
 library(flowViz)
 library(flowClust)
+library(RSvgDevice)
 
 source('run.r')
 source('cat.attr.r')

@@ -1,16 +1,17 @@
 
+# Draw histogram, density plot and normal curve for two clusters
+# biggest cluster is red
 
 draw.plot.double = function(flowframe, subpop, fluo, out.path.plot) {
 
   # graphical parameter
   x.lim = c(0,4)
 
-  png(file.path(out.path.plot))
+#  png(file.path(out.path.plot))
+
+  devSVG(file=file.path(out.path.plot), width=6, height=6, onefile=TRUE)
 
   sorted = sort(matrix(c(mean(subpop[[1]]@exprs[,fluo], na.rm=TRUE),mean(subpop[[2]]@exprs[,fluo], na.rm=TRUE))), index.return=TRUE, decreasing=TRUE)
-
-  # Draw histogram, density plot and normal curve
-  # for biggest cluster (red)
 
   nbreaks = nrow(flowframe)/5
   h = hist(flowframe@exprs[,fluo], breaks=nbreaks, plot=FALSE)

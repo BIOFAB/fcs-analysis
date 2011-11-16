@@ -23,12 +23,4 @@ Requirements:
   BioConductor libraries: flowCore, flowClust and flowViz
   For Ruby: rubygems, rsruby
 
-ToDo:
-
-  Support for specifying channel (red or green) per fcs file in batch mode.
-
-Note:
-
-  The test.rb file runs in batch mode.
-  You can also run this for a single fcs file using the "run" function in fcs3_analysis/run.r
 

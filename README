@@ -1,0 +1,27 @@
+
+This is an internal BIOFAB tool for flow cytometry data analysis.
+
+It uses ellipsis or rectangular gating and clustering and outputs plots of the cluster distributions.
+It outputs three types of data:
+
+  An FCS file containing only the gated and filtered data.
+  A plot showing the distribution of the clusters (one or two).
+  A data file with the mean, variance, standard deviation and individual fluorescences.
+
+We use this tool to analyze the data from our Millipore Guava easyCyte, and some of the code may be specific to the fcs files produced by this device.
+
+Requirements:
+
+  BioConductor libraries: flowCore, flowClust and flowViz
+  Ruby libraries: rubygems, rsruby
+
+ToDo:
+
+  R script to run this without Ruby.
+  Support for specifying channel (red or green) per fcs file in batch mode.
+
+Note:
+
+The test.rb file runs in batch mode.
+You can also run this for a single fcs file using the "run" function in fcs3_analysis/run.r
+

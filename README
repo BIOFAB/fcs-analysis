@@ -10,18 +10,25 @@ It outputs three types of data:
 
 We use this tool to analyze the data from our Millipore Guava easyCyte, and some of the code may be specific to the fcs files produced by this device.
 
+Running using R directly:
+
+  R --vanilla < test.r
+
+Running using R through Ruby:
+
+  ruby test.rb
+
 Requirements:
 
   BioConductor libraries: flowCore, flowClust and flowViz
-  Ruby libraries: rubygems, rsruby
+  For Ruby: rubygems, rsruby
 
 ToDo:
 
-  R script to run this without Ruby.
   Support for specifying channel (red or green) per fcs file in batch mode.
 
 Note:
 
-The test.rb file runs in batch mode.
-You can also run this for a single fcs file using the "run" function in fcs3_analysis/run.r
+  The test.rb file runs in batch mode.
+  You can also run this for a single fcs file using the "run" function in fcs3_analysis/run.r
 

@@ -1,6 +1,6 @@
 
 root.path = getwd()
-script.path = file.path(root.path, 'fcs3_analysis')
+script.path = file.path(root.path, 'r_scripts')
 main.script = file.path(script.path, 'fcs3_analysis.r')
 replicate.path = file.path(root.path, 'example_replicate')
 out.path = file.path(root.path, 'output')

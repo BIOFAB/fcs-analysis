@@ -3,6 +3,7 @@
 batch = function(out.dir,
                  fcs.paths, # the paths for the input fcs files
                  fluo.channel="", # RED or GRN
+                 well.channels=list(), # list mapping well names to fluo channels
                  clean=TRUE, 
                  cluster=TRUE,
                  init.gate="ellipse",
@@ -18,8 +19,6 @@ batch = function(out.dir,
 
 
     dir.create(cur.out.dir, showWarnings=FALSE, recursive=TRUE)
-
-
     
     out.plot.path = file.path(cur.out.dir, 'plot.png')
     out.fcs.c1 = 'c1.fcs'
@@ -29,6 +28,7 @@ batch = function(out.dir,
                out.plot.path,
                fcs.paths[i],
                fluo.channel=fluo.channel,
+               well.channels=well.channels,
                clean=clean,
                cluster=cluster,
                init.gate=init.gate,

@@ -1,8 +1,13 @@
 
+# well.channels is a list where the keys are well names and the value fluorescence channel names
+# well.channels is ignored if fluo.channel is set to a valid fluorescence channel
+# if well.channels does not contain a key for the well name, fluo.channel is used instead
+
 run = function(out.path.fcs,
                out.path.plot,
                fcs.path, # path of single fcs file
-               fluo.channel="", # RED, GRN or ? (TODO)
+               fluo.channel=NULL, # RED, GRN or ? (TODO)
+               well.channels=list(), # list mapping well names to fluo channels
                clean=TRUE, 
                cluster=TRUE,
                init.gate="ellipse",
@@ -38,12 +43,24 @@ run = function(out.path.fcs,
     return(error.data("Too few events"))
   }
 
+  well.name = flowset[[1]]@description$`$WELLID`
+
   if(verbose) {
     cat("  Events: ", nrow(flowset[[1]]@exprs), "\n")
-    cat("  Well name: ", flowset[[1]]@description$`$WELLID`, "\n")
+    cat("  Well name: ", well.name, "\n")
   }
+  
+  # check if a valid fluorescence exiss
+  if(length(well.channels) > 0)  {
+    if(well.name %in% names(well.channels)) {
+      fluo.channel = well.channels[well.name]
+      if(verbose) {
+        cat("Fluorescence channel found for well.\n")
+      }
+    }
+  } 
 
-  # check if fluorescence is invalid
+
   if(class(get.fluo(fluo.channel, scale.gating)) == 'NULL') {
     return(error.data("Invalid fluorescence channel"))
   }
@@ -93,10 +110,6 @@ run = function(out.path.fcs,
 
   fluo_name = get.fluo(fluo.channel, scale.gating)
 
-#  cat("fluo_name: ", fluo_name, "\n")
-#  cat("Exprs: ", flowset[[1]]@exprs[,fluo_name], "\n")
-
-
   if(cluster) {
     if(verbose) {
       cat("Clustered Gating... \n")
@@ -143,11 +156,6 @@ run = function(out.path.fcs,
 
   # === Create summary ===
 
-  # TODO modify to have some equivalent
-# 
-#  combined = combine.replicates(data)
-#  data = append(data, data.frame(Summary=0), 0)
-#  data$Summary = combined
 
   if(length(mixed) == 0) {
     mixed = NULL

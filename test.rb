@@ -7,12 +7,18 @@ require 'ruby_lib/exceptor'
 r = RSRuby.instance
 
 root_path = Dir.pwd
-script_path = File.join(root_path, 'fcs3_analysis')
+script_path = File.join(root_path, 'r_scripts')
 main_script = File.join(script_path, 'fcs3_analysis.r')
 replicate_path = File.join(root_path, 'example_replicate')
 out_path = File.join(root_path, 'output')
 dump_file = File.join(out_path, 'out.dump')
 
+# channels for the different wells
+channels = {
+  'A01' => 'RED',
+  'A03' => 'GRN',
+  'T07' => 'RED'
+}
 
 begin
 
@@ -35,9 +41,17 @@ begin
     fcs_file_paths << fcs_file_path
   end
 
-  puts fcs_file_paths.inspect
+  # Run the analysis
+  data_set = Exceptor.call_r_func(r, r.batch, out_path, fcs_file_paths, :well_channels => channels, :init_gate => init_gate, :verbose => true)
 
-  data_set = Exceptor.call_r_func(r, r.batch, out_path, fcs_file_paths, :fluo_channel => fluo, :init_gate => init_gate, :verbose => true)
+  data_set.each_pair do |file, data|
+    puts "Analysis of file #{file}:"
+    if data['error']
+      puts "  Encountered an error: #{data['error']}"
+    else
+      puts "  Completed successfully"
+    end
+  end
 
   # Dump file for debugging
   f = File.new(dump_file, 'w+')

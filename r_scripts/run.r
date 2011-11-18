@@ -16,6 +16,7 @@ run = function(out.path.fcs,
                clust.levels=c(0.95,0.95), 
                scale.gating="Lin", 
                scale.analysis="Log",
+               min.cells=100,
                verbose=FALSE) {
 
   if(verbose) {
@@ -39,7 +40,7 @@ run = function(out.path.fcs,
   }
 
   # minimum number of events
-  if(nrow(flowset[[1]]@exprs) < 50) {
+  if(nrow(flowset[[1]]@exprs) < min.cells) {
     return(error.data("Too few events"))
   }
 
@@ -117,7 +118,7 @@ run = function(out.path.fcs,
 
     restrict = FALSE
 
-    clusters = clustGating(flowframe, fluo.channel=fluo.channel, scale.gating=scale.gating, scale.analysis=scale.analysis, out.path.plot=out.path.plot, levels=clust.levels)
+    clusters = clustGating(flowframe, fluo.channel=fluo.channel, scale.gating=scale.gating, scale.analysis=scale.analysis, out.path.plot=out.path.plot, levels=clust.levels, min.cells)
 
     if(class(clusters) == 'NULL') {
       return(error.data("Cluster-gating failed"))

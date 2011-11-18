@@ -21,7 +21,7 @@ for(i in 1:length(files)) {
   }
 }
 
-data.set = batch(out.path, fcs.file.paths, fluo.channel=fluo.channel, init.gate=init.gate, verbose=TRUE)
+data.set = batch(out.path, fcs.file.paths, fluo.channel=fluo.channel, init.gate=init.gate, verbose=TRUE, min.cells=100)
 
 cat("Analysis completed.\n")
 cat("Cleaned fcs files and plots in: ", out.path, "\n")

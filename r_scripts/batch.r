@@ -10,6 +10,7 @@ batch = function(out.dir,
                  clust.levels=c(0.95,0.95), 
                  scale.gating="Lin", 
                  scale.analysis="Log",
+                 min.cells=100,
                  verbose=FALSE) {
 
   data.set = list()

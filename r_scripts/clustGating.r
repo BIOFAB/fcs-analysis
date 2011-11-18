@@ -7,7 +7,8 @@ clustGating = function(flowframe,
                        scale.gating="Lin",
                        scale.analysis="Log", 
                        levels=c(0.95,0.95), 
-                       out.path.plot=FALSE) {
+                       out.path.plot=FALSE,
+                       min.cells=100) {
 
   fluo = get.fluo(fluo.channel, scale.gating)
   fluo.gating = get.fluo(fluo.channel, scale.gating)
@@ -21,7 +22,7 @@ clustGating = function(flowframe,
   flowframe = Subset(flowframe, clust.cell)
 
   # skip if less than 10 measurements
-  if(nrow(flowframe@exprs) <= 50) {
+  if(nrow(flowframe@exprs) <= min.cells) {
     return(error.data("Too few events remaining after forward and side scatter gating"))
   }
 
@@ -42,7 +43,7 @@ clustGating = function(flowframe,
     cat("In cluster: ", nrow(flowframe@exprs), "\n")
 
     # skip if less than 10 measurements
-    if(nrow(flowframe@exprs) <= 50) {
+    if(nrow(flowframe@exprs) <= min.cells) {
       return(error.data("Too few events in only cluster"))
     }
 
@@ -62,7 +63,7 @@ clustGating = function(flowframe,
     cat("In cluster 2: ", nrow(subpop[[2]]@exprs), "\n")
 
     # ensure minimum expressions
-    if((nrow(subpop[[1]]@exprs) < 50) | (nrow(subpop[[2]]@exprs) < 50)) {
+    if((nrow(subpop[[1]]@exprs) < min.cells) | (nrow(subpop[[2]]@exprs) < min.cells)) {
       return(error.data("Too few events in one of the two clusters"))
     }
 

@@ -20,6 +20,8 @@ channels = {
   'T07' => 'RED'
 }
 
+min_cells = 100 # if there are fewer cells than this, ignore the well
+
 begin
 
   r.setwd(script_path)
@@ -42,7 +44,7 @@ begin
   end
 
   # Run the analysis
-  data_set = Exceptor.call_r_func(r, r.batch, out_path, fcs_file_paths, :well_channels => channels, :init_gate => init_gate, :verbose => true)
+  data_set = Exceptor.call_r_func(r, r.batch, out_path, fcs_file_paths, :well_channels => channels, :init_gate => init_gate, :verbose => true, :min_cells => min_cells)
 
   data_set.each_pair do |file, data|
     puts "Analysis of file #{file}:"

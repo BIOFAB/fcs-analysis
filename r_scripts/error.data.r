@@ -1,5 +1,5 @@
 
 
-error.data = function(msg) {
-  return(list("error"=msg))
+error.data = function(...) {
+  return(list("error"=paste(..., sep='')))
 }

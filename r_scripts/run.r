@@ -41,8 +41,9 @@ run = function(out.path.fcs,
 
   # minimum number of events
   if(nrow(flowset[[1]]@exprs) < min.cells) {
-    return(error.data("Too few events"))
+    return(error.data("Too few events in fcs file (there were ", nrow(flowset[[1]]@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
   }
+
 
   well.name = flowset[[1]]@description$`$WELLID`
 
@@ -82,6 +83,11 @@ run = function(out.path.fcs,
 
     flowset = clean.flowSet(flowset, fluo.channel=fluo.channel, scale=scale.gating)
 
+    # minimum number of events
+    if(nrow(flowset[[1]]@exprs) < min.cells) {
+      return(error.data("Too few events after cleaning (there were ", nrow(flowset[[1]]@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
+    }
+
     # === Select filter ===
 
     filter = NULL
@@ -102,6 +108,11 @@ run = function(out.path.fcs,
     # === Filter the data ===
 
     flowset = Subset(flowset, filter)
+
+    # minimum number of events
+    if(nrow(flowset[[1]]@exprs) < min.cells) {
+      return(error.data("Too few events after gating with ", init.gate," filter (there were ", nrow(flowset[[1]]@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
+    }
 
   }
 

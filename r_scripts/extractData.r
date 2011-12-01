@@ -20,9 +20,11 @@ extractData = function(flowframe,
   }
 
   data['fluo_channel'] = fluo.channel
+
   data['scale'] = scale
 
-  data['num_events'] = nrow(flowframe@exprs[, fluo])
+  data['num_events'] = length(flowframe@exprs[, fluo])
+
   data['mean'] = mean(flowframe@exprs[, fluo], na.rm=TRUE)
   data['variance'] = var(flowframe@exprs[, fluo], na.rm=TRUE)
   data['standard_deviation'] = sd(flowframe@exprs[, fluo], na.rm=TRUE)
@@ -30,7 +32,7 @@ extractData = function(flowframe,
 
   # cluster 2
   if(two) {
-    data['num_events_c2'] = nrow(flowframe2@exprs[, fluo])
+    data['num_events_c2'] = length(flowframe2@exprs[, fluo])
     data['mean_c2'] = mean(flowframe2@exprs[, fluo], na.rm=TRUE)
     data['variance_c2'] = var(flowframe2@exprs[, fluo], na.rm=TRUE)
     data['standard_deviation_c2'] = sd(flowframe2@exprs[, fluo], na.rm=TRUE)

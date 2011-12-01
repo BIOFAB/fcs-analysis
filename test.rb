@@ -52,13 +52,14 @@ begin
       puts "  Encountered an error: #{data['error']}"
     else
       puts "  Completed successfully"
+      # Dump file for debugging
+      f = File.new(dump_file, 'w+')
+      f.puts(data_set.inspect)
+      f.close
+
     end
   end
 
-  # Dump file for debugging
-  f = File.new(dump_file, 'w+')
-  f.puts(data_set.inspect)
-  f.close
 
   puts "Analysis completed."
   puts "Cleaned fcs files and plots in: #{out_path}"

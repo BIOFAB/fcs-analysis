@@ -29,8 +29,8 @@ begin
   
   # fluo = 'RED'
   fluo = 'GRN'
-  init_gate = 'ellipse'
-  #init_gate = 'rectangle'
+  #init_gate = 'ellipse'
+  init_gate = 'rectangle'
 
   # Build array of fcs files to be analyzed
   fcs_file_paths = []
@@ -44,7 +44,7 @@ begin
   end
 
   # Run the analysis
-  data_set = Exceptor.call_r_func(r, r.batch, out_path, fcs_file_paths, :well_channels => channels, :init_gate => init_gate, :verbose => true, :min_cells => min_cells)
+  data_set = Exceptor.call_r_func(r, r.batch, out_path, fcs_file_paths, :fluo_channel => 'GRN', :well_channels => channels, :init_gate => init_gate, :verbose => true, :min_cells => min_cells)
 
   data_set.each_pair do |file, data|
     puts "Analysis of file #{file}:"

@@ -36,13 +36,7 @@ run = function(out.path.fcs,
   flowset = read.flowSet(path=dirname(fcs.path), pattern=basename(fcs.path))
 
   if(length(flowset) != 1) {
-    return(error.data("Failed to read FCS file"))
-  }
-
-  # minimum number of events
-  if(nrow(flowset[[1]]@exprs) < min.cells) {
-    cat("!!! too few events !!!\n")
-    return(error.data("Too few events in fcs file (there were ", nrow(flowset[[1]]@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
+    return(error.data(NULL, "Failed to read FCS file"))
   }
 
 
@@ -53,19 +47,25 @@ run = function(out.path.fcs,
     cat("  Well name: ", well.name, "\n")
   }
   
-  # check if a valid fluorescence exiss
+  # check if a valid fluorescence exists
   if(length(well.channels) > 0)  {
     if(well.name %in% names(well.channels)) {
       fluo.channel = well.channels[well.name]
+      names(fluo.channel) = NULL
       if(verbose) {
         cat("Fluorescence channel found for well: ", fluo.channel, "\n")
       }
     }
   } 
 
-
   if(class(get.fluo(fluo.channel, scale.gating)) == 'NULL') {
-    return(error.data("Invalid fluorescence channel or fluorescence channel not specified."))
+    return(error.data(fluo.channel, "Invalid fluorescence channel or fluorescence channel not specified."))
+  }
+
+  # minimum number of events
+  if(nrow(flowset[[1]]@exprs) < min.cells) {
+    cat("!!! too few events !!!\n")
+    return(error.data(fluo.channel, "Too few events in fcs file (there were ", nrow(flowset[[1]]@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
   }
 
   if(clean == FALSE) {
@@ -87,7 +87,7 @@ run = function(out.path.fcs,
     # minimum number of events
     if(nrow(flowset[[1]]@exprs) < min.cells) {
       cat("!!! too few events !!!\n")
-      return(error.data("Too few events after cleaning (there were ", nrow(flowset[[1]]@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
+      return(error.data(fluo.channel, "Too few events after cleaning (there were ", nrow(flowset[[1]]@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
     }
 
     # === Select filter ===
@@ -114,7 +114,7 @@ run = function(out.path.fcs,
     # minimum number of events
     if(nrow(flowset[[1]]@exprs) < min.cells) {
       cat("!!! too few events !!!\n")
-      return(error.data("Too few events after gating with ", init.gate," filter (there were ", nrow(flowset[[1]]@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
+      return(error.data(fluo.channel, "Too few events after gating with ", init.gate," filter (there were ", nrow(flowset[[1]]@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
     }
 
   }
@@ -135,7 +135,7 @@ run = function(out.path.fcs,
     clusters = clustGating(flowframe, fluo.channel=fluo.channel, scale.gating=scale.gating, scale.analysis=scale.analysis, out.path.plot=out.path.plot, levels=clust.levels, min.cells)
 
     if(class(clusters) == 'NULL') {
-      return(error.data("Cluster-gating failed"))
+      return(error.data(fluo.channel, "Cluster-gating failed"))
     }    
 
     # propagate error

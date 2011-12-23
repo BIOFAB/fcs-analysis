@@ -23,7 +23,7 @@ clustGating = function(flowframe,
 
   # skip if less than 10 measurements
   if(nrow(flowframe@exprs) <= min.cells) {
-    return(error.data("Too few events remaining after forward and side scatter gating"))
+    return(error.data(fluo.channel, "Too few events remaining after forward and side scatter gating (there were ", nrow(flowset[[1]]@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
   }
 
   # Then on the channel, choosing the best of 1 or 2 cluster(s)
@@ -44,7 +44,7 @@ clustGating = function(flowframe,
 
     # skip if less than 10 measurements
     if(nrow(flowframe@exprs) <= min.cells) {
-      return(error.data("Too few events in only cluster"))
+        return(error.data(fluo.channel, "Too few events the one and only cluster after cluster gating (there were ", nrow(flowset[[1]]@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
     }
 
     if (nrow(flowframe > 2)) {

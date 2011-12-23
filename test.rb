@@ -29,8 +29,8 @@ begin
   
   # fluo = 'RED'
   fluo = 'GRN'
-  #init_gate = 'ellipse'
-  init_gate = 'rectangle'
+  init_gate = 'ellipse'
+  #init_gate = 'rectangle'
 
   # Build array of fcs files to be analyzed
   fcs_file_paths = []
@@ -49,6 +49,12 @@ begin
   data_set.each_pair do |file, data|
     puts "Analysis of file #{file}:"
     if data['error']
+      if data['fluo.channel']
+        puts "Fluorescence channel: #{data['fluo.channel']}"
+      else
+        puts "Fluorescence channel: unknown"
+      end
+
       puts "  Encountered an error: #{data['error']}"
     else
       puts "  Completed successfully"

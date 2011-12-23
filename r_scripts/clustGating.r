@@ -51,25 +51,28 @@ clustGating = function(flowframe,
     
       noclust = 1 # pretend there's only one cluster
 
-      if(nrow(subpop[[1]]@expr) >= min.cells) {
+      if(nrow(subpop[[1]]@exprs) >= min.cells) {
         flowframe = subpop[[1]]
       } else {
         flowframe = subpop[[2]]
       }
     }
-  }    
-
-
-  if (noclust == 1) {
-
+  } else {
     flowframe = Subset(flowframe, clust.fluo)
-
-    cat("In cluster: ", nrow(flowframe@exprs), "\n")
 
     # skip if less than 10 measurements
     if(nrow(flowframe@exprs) <= min.cells) {
         return(error.data(well.name, fluo.channel, "Too few events in the one and only cluster after cluster gating (there were ", nrow(flowframe@exprs), " events, which is less than the minimum of ", min.cells, " events)."))
     }
+  }
+
+  cat("Got here 1\n")
+
+
+  if (noclust == 1) {
+    cat("Got here 2b\n")
+
+    cat("In cluster: ", nrow(flowframe@exprs), "\n")
 
     if (nrow(flowframe > 2)) {
       flowframe@description$"sw.p.value"=shapiro.test(flowframe@exprs[,fluo])$p.value
@@ -80,6 +83,7 @@ clustGating = function(flowframe,
     }
 
   } else if (noclust == 2) {
+  cat("Got here 2\n")
 
     cat("In cluster 1: ", nrow(subpop[[1]]@exprs), "\n")
     cat("In cluster 2: ", nrow(subpop[[2]]@exprs), "\n")

@@ -13,6 +13,10 @@ replicate_path = File.join(root_path, 'example_replicate')
 out_path = File.join(root_path, 'output')
 dump_file = File.join(out_path, 'out.dump')
 
+if ARGV[0]
+  replicate_path = File.expand_path(ARGV[0])
+end
+
 # channels for the different wells
 channels = {
   'A01' => 'RED',

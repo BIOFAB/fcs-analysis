@@ -37,6 +37,29 @@ clustGating = function(flowframe,
 
   cat("Number of clusters: ", noclust, "\n")
 
+  if (noclust == 2) {
+
+    subpop = split(flowframe, clust.fluo) 
+
+    # ensure minimum expressions
+    if((nrow(subpop[[1]]@exprs) < min.cells) & (nrow(subpop[[2]]@exprs) < min.cells)) {
+        return(error.data(well.name, fluo.channel, "Too few events in both of the two clusters after cluster gating (there were ", nrow(subpop[[1]]@exprs), " events in cluster 1 and ", nrow(subpop[[2]]@exprs)," in cluster 2 and the minimum is ", min.cells, " events)."))
+    }
+
+    # if only one cluster with enough events
+    if((nrow(subpop[[1]]@exprs) < min.cells) | (nrow(subpop[[2]]@exprs) < min.cells)) {
+    
+      noclust = 1 # pretend there's only one cluster
+
+      if(nrow(subpop[[1]]@expr) >= min.cells) {
+        flowframe = subpop[[1]]
+      } else {
+        flowframe = subpop[[2]]
+      }
+    }
+  }    
+
+
   if (noclust == 1) {
 
     flowframe = Subset(flowframe, clust.fluo)
@@ -58,25 +81,16 @@ clustGating = function(flowframe,
 
   } else if (noclust == 2) {
 
-    subpop = split(flowframe, clust.fluo) 
-
     cat("In cluster 1: ", nrow(subpop[[1]]@exprs), "\n")
     cat("In cluster 2: ", nrow(subpop[[2]]@exprs), "\n")
 
-    # ensure minimum expressions
-    if((nrow(subpop[[1]]@exprs) < min.cells) | (nrow(subpop[[2]]@exprs) < min.cells)) {
-        return(error.data(well.name, fluo.channel, "Too few events in one of the two clusters after cluster gating (there were ", nrow(subpop[[1]]@exprs), " events in cluster 1 and ", nrow(subpop[[2]]@exprs)," in cluster 2 and the minimum is ", min.cells, " events)."))
-    }
-
     if (out.path.plot != FALSE) {
-
       mix = draw.plot.double(flowframe, subpop, fluo.analysis, out.path.plot)
     }
   }
 
   if (class(mix) != 'NULL') { # if there were two clusters
 
-    # TODO removed nameByWell calls. not sure if it will break something
     clust.data = list(cluster1=flowframe, cluster2=mix)
     nclust = list(cluster1=noclust, cluster2=2) 
 

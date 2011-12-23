@@ -46,15 +46,26 @@ begin
   # Run the analysis
   data_set = Exceptor.call_r_func(r, r.batch, out_path, fcs_file_paths, :fluo_channel => 'GRN', :well_channels => channels, :init_gate => init_gate, :verbose => true, :min_cells => min_cells)
 
+  puts "================================================="
+  puts "                    Results                      "
+  puts "================================================="
+  puts " "
+
   data_set.each_pair do |file, data|
     puts "Analysis of file #{file}:"
-    if data['error']
-      if data['fluo.channel']
-        puts "Fluorescence channel: #{data['fluo.channel']}"
-      else
-        puts "Fluorescence channel: unknown"
-      end
 
+    if data['well_name']
+      puts "  Well: #{data['well_name']}"
+    else
+      puts "  Well: unknown"
+    end
+    if data['fluo_channel']
+      puts "  Fluorescence channel: #{data['fluo_channel']}"
+    else
+      puts "  Fluorescence channel: unknown"
+    end
+
+    if data['error']
       puts "  Encountered an error: #{data['error']}"
     else
       puts "  Completed successfully"
@@ -62,8 +73,8 @@ begin
       f = File.new(dump_file, 'w+')
       f.puts(data_set.inspect)
       f.close
-
     end
+    puts " "
   end
 
 
